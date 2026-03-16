@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using BookStore.Data;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookAssortmentDb")));
 
 var app = builder.Build();
 
@@ -9,8 +16,9 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
-
+app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
